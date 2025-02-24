@@ -2,7 +2,7 @@
 
 ### Key Enhancements:
 - Fixed issues with incorrect prompts and seeds during enhance upscale and other enhancement processes.
-- Added functionality for inline LoRA usage, now fully compatible with wildcards you can use it like this: <lora:lora_name:1>
+- Added functionality for inline LoRA usage, now fully compatible with wildcards you can use it like this: `<lora:lora_name:1>`
 - also supports loras names which have special characters like ( and japanese characters.
 - Introduced support for inline aspect ratios, which also work seamlessly with wildcards, type in the prompt the aspect ratio like this 1280×720 or 1280x720 or 1280*720, you can also copy paste it from the available aspect ratios in Fooocus User interface.
 - Improved wildcard processing: You can now choose to process some wildcards in order while keeping others random, all within the same prompt, to process a wildcard in order prefix it with: _o__ instead of __ 
