@@ -465,31 +465,63 @@ def cleanup_prompt(prompt):
     return cleaned_prompt[:-2]
 
 
-def apply_wildcards(wildcard_text, rng, i, read_wildcards_in_order) -> str:
+def apply_wildcards(wildcard_text, rng, i, read_wildcards_in_order, wildcard_start_row=None) -> str:
+    if wildcard_start_row is None:
+        wildcard_start_row = {}
+
     for _ in range(modules.config.wildcards_max_bfs_depth):
-        placeholders = re.findall(r'__([\w-]+)__', wildcard_text)
-        if len(placeholders) == 0:
+        # Match both ordered wildcards (_o__) and regular wildcards (__)
+        # Ensure full filenames are captured including dots, numbers, special characters
+        placeholders = re.findall(r'(_o__|__)?([\w\.\(\)ぁ-んァ-ヶ一-龯ー々・-]+?)__(\d+_)?', wildcard_text)
+
+        if not placeholders:
             return wildcard_text
 
         print(f'[Wildcards] processing: {wildcard_text}')
-        for placeholder in placeholders:
+        
+        for prefix, placeholder, suffix in placeholders:
             try:
+                # Ensure the full wildcard file name is matched correctly
                 matches = [x for x in modules.config.wildcard_filenames if os.path.splitext(os.path.basename(x))[0] == placeholder]
+
+                if not matches:
+                    raise FileNotFoundError(f"Wildcard file for '{placeholder}' not found.")
+
                 words = open(os.path.join(modules.config.path_wildcards, matches[0]), encoding='utf-8').read().splitlines()
-                words = [x for x in words if x != '']
-                assert len(words) > 0
-                if read_wildcards_in_order:
-                    wildcard_text = wildcard_text.replace(f'__{placeholder}__', words[i % len(words)], 1)
+                words = [x.strip() for x in words if x.strip()]
+                
+                if not words:
+                    raise ValueError(f"Wildcard file '{matches[0]}' is empty.")
+
+                # Handling ordered and unordered wildcards
+                if prefix == '_o__':
+                    start_row = wildcard_start_row.get(placeholder, 0) - 1
+                    if not suffix:
+                        start_row = 0  # Ensure no negative index errors
+                    selected_word = words[(start_row + i) % len(words)]
                 else:
-                    wildcard_text = wildcard_text.replace(f'__{placeholder}__', rng.choice(words), 1)
-            except:
+                    selected_word = words[i % len(words)] if read_wildcards_in_order else rng.choice(words)
+
+                print(f"[Wildcards] selected_word: {selected_word}")
+
+                # Recursively process nested wildcards
+                selected_word = apply_wildcards(selected_word, rng, i, read_wildcards_in_order, wildcard_start_row)
+
+                # Replace the entire wildcard pattern (including suffix) with the selected word
+                wildcard_pattern = f'{prefix}{placeholder}__{suffix}' if suffix else f'{prefix}{placeholder}__'
+                wildcard_text = wildcard_text.replace(wildcard_pattern, selected_word, 1)
+
+            except Exception as e:
                 print(f'[Wildcards] Warning: {placeholder}.txt missing or empty. '
-                      f'Using "{placeholder}" as a normal word.')
-                wildcard_text = wildcard_text.replace(f'__{placeholder}__', placeholder)
+                      f'Using "{placeholder}" as a normal word. Error: {e}')
+                wildcard_pattern = f'{prefix}{placeholder}__{suffix}' if suffix else f'{prefix}{placeholder}__'
+                wildcard_text = wildcard_text.replace(wildcard_pattern, placeholder, 1)
+
             print(f'[Wildcards] {wildcard_text}')
 
     print(f'[Wildcards] BFS stack overflow. Current text: {wildcard_text}')
     return wildcard_text
+
 
 
 def get_image_size_info(image: np.ndarray, aspect_ratios: list) -> str:
