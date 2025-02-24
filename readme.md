@@ -1,4 +1,4 @@
-#Fooocus - Enhanced Version  
+#Fooocus - Enhanced Version
 
 ### Key Enhancements:  
 - Fixed issues with incorrect prompts and seeds during enhance upscale and other enhancement processes.  
