@@ -1,4 +1,4 @@
-# Fooocus - Enhanced Version  
+#Fooocus - Enhanced Version  
 
 ### Key Enhancements:  
 - Fixed issues with incorrect prompts and seeds during enhance upscale and other enhancement processes.  
@@ -20,9 +20,7 @@ This version retains Fooocus' simplicity while enhancing its flexibility and acc
 
 ---
 
-## ❤️ Support My Work  
-I’ve spent months improving Fooocus, adding new features, fixing bugs, and optimizing performance. If you enjoy using this enhanced version and would like to support its development, consider buying me a coffee!  
+### Support My Work  
+I’ve been developing and improving Fooocus despite not having a GPU powerful enough to run it myself. If you find this project useful, consider supporting me so I can continue working on it and eventually get better hardware for testing and development.  
 
-[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/edward_no_genso)  
-
-Every contribution helps keep this project alive and motivates me to continue improving it. Thanks for your support!  
+☕ [Support me on Ko-fi](https://ko-fi.com/edward_no_genso)  
