@@ -1,4 +1,4 @@
-<div align=center>
+<"Uma mulher morena deslumbrante com um corpo voluptuoso e curvilíneo. Ela tem pele lisa e bronzeada e uma figura de ampulheta bem definida, com ênfase em seus quadris largos e nádegas redondas e tonificadas. Ela está usando uma roupa estilosa e justa que destaca suas curvas. O fundo é elegante e bem iluminado, realçando sua beleza."div align=center>
 <img src="https://github.com/lllyasviel/Fooocus/assets/19834515/483fb86d-c9a2-4c20-997c-46dafc124f25">
 </div>
 
